@@ -1,1 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Locator Data</title>
+</head>
+<body>
+    <h1>Enter Grid Locator</h1>
+    <form id="locatorForm">
+        <input type="text" id="gridLocator" placeholder="e.g., IO83QJ" required>
+        <button type="submit">Submit</button>
+    </form>
+    <pre id="output"></pre>
 
+    <script>
+        document.getElementById('locatorForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userLocator = document.getElementById('gridLocator').value;
+            const coarseLocator = userLocator.slice(0, 4);
+            const apiUrl = `https://api-beta.rsgb.online/locator/${coarseLocator}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('output').textContent = JSON.stringify(data.data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        });
+    </script>
+</body>
+</html>
